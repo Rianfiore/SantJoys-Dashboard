@@ -72,7 +72,7 @@ const Login = (props) => {
 
   // Values
   const [creds, setCreds] = React.useState({
-    username: "name@company.com",
+    username: "",
     password: "",
   });
   const [errors, setErrors] = React.useState({
@@ -219,6 +219,24 @@ const Login = (props) => {
                 <Typography>Sign In</Typography>
               )}
             </Button>
+            {/* <Button
+              variant="contained"
+              color="primary"
+              style={{
+                boxShadow: "none",
+                width: 100,
+                marginBottom: "1rem",
+                textTransform: "none",
+              }}
+              onClick={actionLoginGoogle}
+              disabled={submit}
+            >
+              {submit ? (
+                <CircularProgress style={{ color: "#fff" }} size={24} />
+              ) : (
+                <Typography>Sign In with Google</Typography>
+              )}
+            </Button> */}
             <div style={{ width: 352, height: 112 }}>
               {props.errorMessage.message ? <ShowErrorMessage /> : null}
             </div>

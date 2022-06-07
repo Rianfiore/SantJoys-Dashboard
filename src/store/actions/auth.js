@@ -1,6 +1,6 @@
-import axios from "axios";
 import setAuthorizationToken from "../../utils/setAuthorizationToken";
-import jwtDecode from "jwt-decode";
+import firebaseApp from "../../firebase/Api";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import {
   SET_CURRENT_USER,
   SET_INVALID_CREDENTIALS,
@@ -43,43 +43,35 @@ export function setConnectionRefusedError() {
     type: SET_CONNECTION_REFUSED_ERROR,
     error: {
       status: 502,
-      message: "Bad Gateway - Connection refused. Please try again later.",
+      message:
+        "Email ou senha incorretos. Por favor, digite os dados corretamente.",
     },
   };
 }
 
 export function userSignInRequest(userData) {
+  const auth = getAuth(),
+    { username, password } = userData;
+
   return async (dispatch) => {
-    try {
-      const res = await axios.post(`${URL}/login`, userData);
-      if (res.headers.authorization) {
-        // Expect "Bearer "
-        const token = res.headers.authorization.substring(
-          7,
-          res.headers.authorization.length
-        );
+    signInWithEmailAndPassword(auth, username, password)
+      .then(() => {
+        const token = auth.currentUser.accessToken;
         localStorage.setItem("token", token);
         setAuthorizationToken(token);
-        // dispatch(setCurrentUser(jwtDecode(token)));
-
-        const avatarId = await axios.get(
-          `${URL}/users/avatar?username=${userData.username}`
-        );
-        dispatch(
-          setCurrentUser({ ...jwtDecode(token), avatarId: avatarId.data })
-        );
-      }
-    } catch (error) {
-      if (error.response) {
-        if (error.response.status === 403) {
-          dispatch(setInvalidCredentials(error.response.status));
+        dispatch(setCurrentUser({ ...userData }));
+      })
+      .catch((error) => {
+        if (error.response) {
+          if (error.response.status === 403) {
+            dispatch(setInvalidCredentials(error.response.status));
+          } else {
+            dispatch(setInternalServerError(error.response.status));
+          }
         } else {
-          dispatch(setInternalServerError(error.response.status));
+          dispatch(setConnectionRefusedError());
         }
-      } else {
-        dispatch(setConnectionRefusedError());
-      }
-    }
+      });
   };
 }
 
