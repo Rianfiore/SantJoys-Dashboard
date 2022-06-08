@@ -72,8 +72,8 @@ const Login = (props) => {
 
   // Values
   const [creds, setCreds] = React.useState({
-    username: "",
-    password: "",
+    username: "rianfiore@gmail.com",
+    password: "Rianbarbosa12",
   });
   const [errors, setErrors] = React.useState({
     username: false,

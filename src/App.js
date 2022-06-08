@@ -34,6 +34,7 @@ import getAvatar from "./Common/AnimalAvatars";
 
 import "./App.css";
 import MonkeyAvatar from "../src/Common/img/avatars/monkey.png";
+import { Payment } from "@material-ui/icons";
 
 const useStyles = makeStyles({
   root: {

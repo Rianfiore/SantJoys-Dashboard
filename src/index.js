@@ -24,7 +24,7 @@ const store = createStore(
 if (localStorage.token) {
   const decodedToken = jwtDecode(localStorage.token);
   if (decodedToken.exp < new Date().getTime() / 1000) {
-    console.log("EXPIRED");
+    localStorage.token = "";
   } else {
     setAuthorizationToken(localStorage.token);
     store.dispatch(setCurrentUser(decodedToken));

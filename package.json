@@ -11,6 +11,7 @@
     "faker": "^4.1.0",
     "firebase": "^9.8.2",
     "jwt-decode": "^2.2.0",
+    "pagarme": "^4.23.1",
     "react": "16.8.0",
     "react-dom": "16.8.0",
     "react-redux": "^8.0.2",
